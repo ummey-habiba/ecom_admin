@@ -37,7 +37,7 @@ class _ViewProductPageState extends State<ViewProductPage> {
         builder: (context, provider, child) => ListView.builder(itemCount:provider.productList.length,itemBuilder: (context, index) {
           final product= provider.productList[index];
           return ListTile(
-            onTap:() =>  Navigator.pushNamed(context, ProductDetailsPage.routeName),
+            onTap:() =>  Navigator.pushNamed(context, ProductDetailsPage.routeName,arguments: product.id),
             title: Text(product.productName),
             subtitle: Text(product.categoryModel.name),
             trailing: Text('Stock: ${product.stock}'),

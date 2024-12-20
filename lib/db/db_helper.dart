@@ -28,4 +28,8 @@ class DbHelper {
       _db.collection(_collectionCategory).orderBy('name').snapshots();
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllProducts() =>
       _db.collection(_collectionProduct).snapshots();
+
+  static Future<void> updateSingleProductField(String id, String field, dynamic value){
+    return _db.collection(_collectionProduct).doc(id).update({field: value});
+  }
 }

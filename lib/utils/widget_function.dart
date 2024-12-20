@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 showMsg(BuildContext context ,String msg){
@@ -8,6 +7,7 @@ showMsg(BuildContext context ,String msg){
 showSingleTextInputDialogue({
   required String title,
   required BuildContext context,
+  TextInputType textInputType = TextInputType.text,
   String positiveButtonText = 'Save',
   String negativeButtonText = 'Cancel',
   required Function(String) onSave,
@@ -21,6 +21,7 @@ showSingleTextInputDialogue({
         padding: const EdgeInsets.all(8.0),
         child: TextField(
           controller: controller,
+          keyboardType: textInputType,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             hintText: 'Enter $title',

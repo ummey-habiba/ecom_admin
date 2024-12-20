@@ -1,10 +1,6 @@
 import 'dart:io';
-
-import 'package:ecom_admin/main.dart';
 import 'package:ecom_admin/models/category_model.dart';
 import 'package:ecom_admin/models/product_model.dart';
-import 'package:ecom_admin/pages/login_page.dart';
-import 'package:ecom_admin/providers/auth_provider.dart';
 import 'package:ecom_admin/providers/product_provider.dart';
 import 'package:ecom_admin/utils/widget_function.dart';
 import 'package:flutter/material.dart';
@@ -42,9 +38,7 @@ class _NewProductPageState extends State<NewProductPage> {
         appBar: AppBar(
           title: const Text('New Product'),
           actions: [
-            IconButton(
-                onPressed: _saveProduct,
-                icon: Icon(Icons.save))
+            IconButton(onPressed: _saveProduct, icon: Icon(Icons.save))
           ],
         ),
         body: Form(
@@ -59,14 +53,14 @@ class _NewProductPageState extends State<NewProductPage> {
                       elevation: 5.0,
                       child: localImagePath == null
                           ? const Icon(
-                        Icons.person,
-                        size: 100,
-                      )
+                              Icons.person,
+                              size: 100,
+                            )
                           : Image.file(
-                        File(localImagePath!),
-                        height: 100,
-                        width: 100,
-                      ),
+                              File(localImagePath!),
+                              height: 100,
+                              width: 100,
+                            ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +88,7 @@ class _NewProductPageState extends State<NewProductPage> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
@@ -111,7 +105,7 @@ class _NewProductPageState extends State<NewProductPage> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: TextFormField(
                     controller: _descriptionController,
                     decoration: InputDecoration(
@@ -128,7 +122,7 @@ class _NewProductPageState extends State<NewProductPage> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: TextFormField(
                     controller: _priceController,
                     decoration: InputDecoration(
@@ -145,7 +139,7 @@ class _NewProductPageState extends State<NewProductPage> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: TextFormField(
                     controller: _stokeController,
                     decoration: InputDecoration(
@@ -162,7 +156,7 @@ class _NewProductPageState extends State<NewProductPage> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: TextFormField(
                     controller: _discountController,
                     decoration: InputDecoration(
@@ -176,21 +170,20 @@ class _NewProductPageState extends State<NewProductPage> {
                   child: Consumer<ProductProvider>(
                     builder: (context, provider, child) =>
                         DropdownButtonFormField<CategoryModel>(
-                          hint: const Text('Select Category'),
-                          isExpanded: true,
-                          decoration:
+                      hint: const Text('Select Category'),
+                      isExpanded: true,
+                      decoration:
                           const InputDecoration(border: InputBorder.none),
-                          items: provider.categoryList
-                              .map((model) =>
-                              DropdownMenuItem<CategoryModel>(
-                                  value: model, child: Text(model.name)))
-                              .toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              categoryModel = value!;
-                            });
-                          },
-                        ),
+                      items: provider.categoryList
+                          .map((model) => DropdownMenuItem<CategoryModel>(
+                              value: model, child: Text(model.name)))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          categoryModel = value!;
+                        });
+                      },
+                    ),
                   ),
                 )
               ],
@@ -200,8 +193,8 @@ class _NewProductPageState extends State<NewProductPage> {
   }
 
   void _getImage(ImageSource source) async {
-    final xFile = await ImagePicker().pickImage(
-        source: source, imageQuality: 60);
+    final xFile =
+        await ImagePicker().pickImage(source: source, imageQuality: 60);
     if (xFile != null) {
       setState(() {
         localImagePath = xFile.path;
@@ -209,30 +202,30 @@ class _NewProductPageState extends State<NewProductPage> {
     }
   }
 
-  void _saveProduct()async {
-    if (localImagePath == null) {
+  void _saveProduct() async {
+    /* if (localImagePath == null) {
       return showMsg(context, 'No image selected');
-    }
+    }*/
     if (_formKey.currentState!.validate()) {
       EasyLoading.show(status: 'Please wait...');
       try {
         final product = ProductModel(
-          categoryModel: categoryModel!,
-          productName: _nameController.text,
-          price: num.parse(_priceController.text),
-          stock: num.parse(_stokeController.text),
-          description: _descriptionController.text,
-          imageUrl: localImagePath!);
-    await context.read<ProductProvider>().addNewProduct(product);
+            categoryModel: categoryModel!,
+            productName: _nameController.text,
+            price: num.parse(_priceController.text),
+            stock: num.parse(_stokeController.text),
+            description: _descriptionController.text,
+            discountPercent: int.parse(_discountController.text),
+            imageUrl: "https://picsum.photos/600");
+        await context.read<ProductProvider>().addNewProduct(product);
         EasyLoading.dismiss();
         showMsg(context, 'Saved');
         _resetFields();
-  }catch(error){
-EasyLoading.dismiss();
-showMsg(context, error.toString());
-
+      } catch (error) {
+        EasyLoading.dismiss();
+        showMsg(context, error.toString());
+      }
     }
-  }
   }
 
   void _resetFields() {
@@ -242,8 +235,8 @@ showMsg(context, error.toString());
       _stokeController.clear();
       _descriptionController.clear();
       _discountController.clear();
-      categoryModel=null;
-      localImagePath=null;
+      categoryModel = null;
+      localImagePath = null;
     });
   }
 }

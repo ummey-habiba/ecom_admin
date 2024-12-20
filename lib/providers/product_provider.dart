@@ -19,10 +19,17 @@ getAllCategories(){
       categoryList=List.generate(snapshot.docs.length, (index)=>CategoryModel.fromMap(snapshot.docs[index].data()));
     });
 }
+ProductModel getProductFromListById(String id){
+    return productList.firstWhere((product)=> product.id== id);
+}
 
 getAllProducts(){
   DbHelper.getAllProducts().listen((snapshot){
     productList=List.generate(snapshot.docs.length, (index)=>ProductModel.fromMap(snapshot.docs[index].data()));
   });
 }
+Future<void> updateSingleProductField(String id , String field,dynamic value){
+    return DbHelper.updateSingleProductField(id, field, value);
+}
+
 }
